@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import math
 from statistics import stdev, mean
+import matplotlib.pyplot as plt
 
 # activation function
 # params:
@@ -143,12 +144,13 @@ class NeuralNetwork:
     # and calls the feedforward function
     # params:
     #   id_row: the id corresponding to the current row from the input
+    #   n_values: the amount of rows in the dataframe
     # return: no return
-    def _feedforward(self, id_row):
+    def _feedforward(self, id_row, n_values):
         current_y = self.y.iloc[id_row,:]['Survived']
         last_layer_index = len(self._layers)-1
         self.feedforward(id_row)
-        self.sq_mean_error = 0.5 *((current_y - self._layers[last_layer_index]) ** 2)
+        self.sq_mean_error = ((current_y - self._layers[last_layer_index]) ** 2)/n_values
         self.cross_entropy  = -current_y*math.log(self._layers[last_layer_index])-(1-current_y)*math.log(1-self._layers[last_layer_index])
 
     # Backpropagation of the nn
@@ -229,20 +231,28 @@ class NeuralNetwork:
         self.add_layer(3,2)
         self.add_layer(2,1)
         m = X.shape[0] #number of samples
+        sq_mean_errors = []
         for i in range(n_epochs):
             sq_mean_error = 0
             cross_entropy = 0
             for j in range(m):
-                self._feedforward(j)
+                self._feedforward(j, m)
                 sq_mean_error += self.sq_mean_error
                 cross_entropy += self.cross_entropy
                 self.backprop(j)
-        f.write("cost: square mean error: %f\n" %(sq_mean_error[0]))
+            sq_mean_errors.append(sq_mean_error)
+        print(sq_mean_errors)
+        f.write("cost: square mean error: %f\n" %(sum(sq_mean_errors)/m))
         f.write("cost: cross-entropy: %f\n" %(cross_entropy/m))
 
         if (print_weights):
             f.write("weights: "+str(self.weights)+"\n")
 
+        plt.clf()
+        plt.plot(sq_mean_errors)
+        plt.ylabel('Sq mean error')
+        plt.xlabel('Epoch')
+        plt.show()
 
 def main():
     X = pd.read_csv('../titanic/train_x.csv', sep=',', skiprows=1, names=['Pclass', 'Sex', 'Age', 'Parch', 'Fare'])
@@ -262,7 +272,7 @@ def main():
     X_80_20 = split(X, int(0.8*m))
     y_80_20 = split(y, int(0.8*m))
     nn = NeuralNetwork(X, y, 3)
-    epochs = 50
+    epochs = 100
     nn.run_nn_simulation(X_80_20[0], y_80_20[0], epochs, f, True)
     nn.check_accuracy(X_80_20[1], y_80_20[1])
 
