@@ -3,41 +3,48 @@
 import numpy as np
 import pandas as pd
 import math
-from statistics import stdev
+from statistics import stdev, mean
 
 # activation function
+# params:
+#       x: the value to be evaluated
+# returns: the evaluation of x
 def sigmoid(x):
     return 1.0/(1+ np.exp(-x))
 
 # backprop to adjust weights depending on the magnitude of the error
+# params:
+#       x: the value to be evaluated
+# returns: the evaluation of x
 def sigmoid_derivative(x):
     return x * (1.0 - x)
 
-
+# Scales the given data using regularization
+# params:
+#   column: a set of values
+# The set of values scaled
 def regularization(column):
-    sum = 0
-    for value in column:
-        sum += value
-    average = sum/len(column)
-    std = stdev(column)
     aux_column = []
     for value in column:
-        aux_column.append((value-average)/std) #https://maristie.com/blog/differences-between-normalization-standardization-and-regularization/
+        aux_column.append((value-mean(column))/stdev(column)) #https://maristie.com/blog/differences-between-normalization-standardization-and-regularization/
         #https://medium.com/greyatom/why-how-and-when-to-scale-your-features-4b30ab09db5e
     return aux_column
 
+# Applies one_hot_encoding to the column_name from X
+# params:
+#   X: the DataFrame with the input data
+#   column_name: the name of the column that wants to be 'one-hot-encoded'
+# The dataframe with the new columns of the one_hot_encoding
 def one_hot_encoding(X, column_name):
     possible_values = X[column_name].unique()
-    n_possible_values = len(possible_values)
-    aux_matrix = [[0]*n_possible_values]*len(X[column_name])
-    df = pd.DataFrame(aux_matrix, columns= possible_values)
+    aux_matrix = [[0]*len(possible_values)]*len(X[column_name]) #matrix of zeros
+    df = pd.DataFrame(aux_matrix, columns=possible_values)
 
     for i in range(len(X[column_name])):
         value = X[column_name].iloc[i]
         df.loc[i][value] = 1
     X = X.drop(column_name, axis=1)
     X = pd.concat([X, df], axis=1, join_axes=[X.index])
-
     return X
 
 class NeuralNetwork:
@@ -51,18 +58,24 @@ class NeuralNetwork:
         self.sq_mean_error  = 0
         self.cross_entropy  = 0
 
-    # n_inputs = The input size (coming from the input layer or a previous hidden layer)
-    # n_neurons = The number of neurons in this layer.
+    # Adds a layer to the nn
+    # params:
+    #   n_inputs: The input size (coming from the input layer or a previous hidden layer)
+    #   n_neurons:The number of neurons in this layer.
+    # return: no return
     def add_layer(self, n_inputs, n_neurons):
         self._layers.append(None)
         weights = np.random.rand(n_inputs, n_neurons)
         self.weights.append(weights)
 
-    def feedforward(self, row):
-        current_y = self.y.iloc[row,:]['Survived']
-        current_x = self.input.iloc[row,:]
+    # Feedforwards the nn
+    # params:
+    #   id_row: the id corresponding to the current row from the input
+    # return: no return
+    def feedforward(self, id_row):
+        current_y = self.y.iloc[id_row,:]['Survived']
+        current_x = self.input.iloc[id_row,:]
         last_layer_index = len(self._layers)-1
-        #refactor for scalability
         for i in range(len(self._layers)):
             if (i == 0 ): #if first layer
                 self._layers[i]= sigmoid(np.dot(current_x, self.weights[i]))
@@ -71,11 +84,15 @@ class NeuralNetwork:
         self.sq_mean_error = 0.5 *((current_y - self._layers[last_layer_index]) ** 2)
         self.cross_entropy  = -current_y*math.log(self._layers[last_layer_index])-(1-current_y)*math.log(1-self._layers[last_layer_index])
 
-    def backprop(self, row):
-        current_y = self.y.iloc[row,:]['Survived']
-        current_x = self.input.iloc[row,:]
+    # Backpropagation of the nn
+    # params:
+    #   id_row: the id corresponding to the current row from the input
+    # return: no return
+    def backprop(self, id_row):
+        current_y = self.y.iloc[id_row,:]['Survived']
+        current_x = self.input.iloc[id_row,:]
         last_layer_index = len(self._layers)-1
-            # Loop over the layers backward
+        # Loop over the layers backward
         for i in reversed(range(len(self._layers))):
             layer = self._layers[i]
             # If this is the output layer
@@ -91,13 +108,15 @@ class NeuralNetwork:
             input_to_use = np.atleast_2d(current_x if i == 0 else self._layers[i - 1]) #https://docs.scipy.org/doc/numpy/reference/generated/numpy.atleast_2d.html
             self.weights[i] += self.deltas[i] * input_to_use.T * self.learning_rate
 
+
 def main():
     X = pd.read_csv('../titanic/train_x.csv', sep=',', skiprows=1, names=['Pclass', 'Sex', 'Age', 'Parch', 'Fare'])
     y = pd.read_csv('../titanic/train_y.csv', sep=',', skiprows=1, names=['Survived'])
 
+    #one hot encoding
     X = one_hot_encoding(X, "Pclass")
 
-    # # #regularization
+    #regularization
     for column in X:
         X[column] = regularization(X[column])
 
@@ -107,7 +126,7 @@ def main():
     nn.add_layer(3,1)
 
     m = X.shape[0] #number of samples
-    for i in range(100):#0000):
+    for i in range(1):#0000):
         sq_mean_error = 0
         cross_entropy = 0
         for j in range(m):
