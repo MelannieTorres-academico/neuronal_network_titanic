@@ -19,7 +19,11 @@ def dimensionality_reduction(X, y):
         f.write(str(len(list(aux_X.columns.values)))+' :'+str(list(aux_X.columns.values))+' \n')
         epochs = 50
         nn = ann.NeuralNetwork(aux_X, y, 3)
-        nn.run_nn_simulation(aux_X, y, epochs, f)
+        m = len(aux_X)
+        X_80_20 = ann.split(aux_X, int(0.8*m))
+        y_80_20 = ann.split(y, int(0.8*m))
+        nn.run_nn_simulation(X_80_20[0], y_80_20[0], epochs, f)
+        f.write('accuracy %f' %nn.check_accuracy(X_80_20[1], y_80_20[1]))
 
 # calculates all the possible combinations of which columns to use for a model
 # params:
@@ -60,9 +64,9 @@ def main():
     #one hot encoding
     X = ann.one_hot_encoding(X, "Pclass")
 
-    #regularization
+    #scaling
     for column in X:
-        X[column] = ann.regularization(X[column])
+        X[column] = ann.scaling(X[column])
 
     dimensionality_reduction(X, y)
 

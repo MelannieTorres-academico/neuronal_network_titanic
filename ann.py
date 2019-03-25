@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import math
 from statistics import stdev, mean
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 # activation function
 # params:
@@ -18,11 +18,11 @@ def sigmoid(x):
 def sigmoid_derivative(x):
     return x * (1.0 - x)
 
-# Scales the given data using regularization
+# Scales the given data
 # params:
 #   column: a set of values
 # returns: The set of values scaled
-def regularization(column):
+def scaling(column):
     aux_column = []
     for value in column:
         aux_column.append((value-mean(column))/stdev(column))
@@ -74,7 +74,7 @@ def k_folds(X, y, k):
         f = open("k-folds/k-folds.txt","a")
         f.write('\nk = %d\n' %i)
         nn = NeuralNetwork(X, y, 3)
-        epochs = 500
+        epochs = 50
         nn.run_nn_simulation(X, y, epochs, f, True)
         accuracy = nn.check_accuracy(cross_validation_x, cross_validation_y)
         accuracies.append(accuracy)
@@ -103,9 +103,18 @@ def clean_dataset(df):
     #dimensionality reduction - consult atached files to see why I deleted this columns
     df = df.drop('Parch', axis=1)
     df = df.drop(3, axis=1)
-    #regularization
+    # 'Sex', 'Fare', 2, 1
+    #
+    #  'Sex', 'Age',  'Fare', 2, 1
+    scaling
     for column in df:
-        df[column] = regularization(df[column])
+        df[column] = scaling(df[column])
+
+    bias = pd.DataFrame([1]*len(df), columns=['bias'])
+
+    #add bias
+    df = pd.concat([bias, df], axis=1, join_axes=[df.index])
+
     return df
 
 class NeuralNetwork:
@@ -118,6 +127,7 @@ class NeuralNetwork:
         self.deltas         = [0]*n_layers
         self.sq_mean_error  = 0
         self.cross_entropy  = 0
+        self.regularization_rate = 0.01
 
     # Adds a layer to the nn
     # params:
@@ -133,23 +143,24 @@ class NeuralNetwork:
     # params:
     #   id_row: the id corresponding to the current row from the input
     # return: no return
-    def feedforward(self, id_row):
-        current_x = self.input.iloc[id_row,:]
+    def feedforward(self, df, id_row):
+        current_x = df.iloc[id_row,:]
         for i in range(len(self._layers)):
             if (i == 0 ): #if first layer
                 self._layers[i]= sigmoid(np.dot(current_x, self.weights[i]))
             else:
                 self._layers[i] = sigmoid(np.dot(self._layers[i-1], self.weights[i]))
+
     # Prepares the data to feedforward the nn during the training
     # and calls the feedforward function
     # params:
     #   id_row: the id corresponding to the current row from the input
     #   n_values: the amount of rows in the dataframe
     # return: no return
-    def _feedforward(self, id_row, n_values):
+    def _feedforward(self, X, id_row, n_values):
         current_y = self.y.iloc[id_row,:]['Survived']
         last_layer_index = len(self._layers)-1
-        self.feedforward(id_row)
+        self.feedforward(X, id_row)
         self.sq_mean_error = ((current_y - self._layers[last_layer_index]) ** 2)/n_values
         self.cross_entropy  = -current_y*math.log(self._layers[last_layer_index])-(1-current_y)*math.log(1-self._layers[last_layer_index])
 
@@ -157,9 +168,9 @@ class NeuralNetwork:
     # params:
     #   id_row: the id corresponding to the current row from the input
     # return: no return
-    def backprop(self, id_row):
+    def backprop(self, df, id_row):
         current_y = self.y.iloc[id_row,:]['Survived']
-        current_x = self.input.iloc[id_row,:]
+        current_x = df.iloc[id_row,:]
         last_layer_index = len(self._layers)-1
         # Loop over the layers backward
         for i in reversed(range(len(self._layers))):
@@ -175,7 +186,7 @@ class NeuralNetwork:
             layer = self._layers[i]
             # The input is either the previous layers output or X itself (for the first hidden layer)
             input_to_use = np.atleast_2d(current_x if i == 0 else self._layers[i - 1]) #https://docs.scipy.org/doc/numpy/reference/generated/numpy.atleast_2d.html
-            self.weights[i] += self.deltas[i] * input_to_use.T * self.learning_rate
+            self.weights[i] += self.deltas[i] * input_to_use.T * self.learning_rate #- self.learning_rate * self.regularization_rate * self.weights[i]
 
     # Evaluates the accuracy of the model
     # params:
@@ -213,8 +224,8 @@ class NeuralNetwork:
     # return: the result of the evaluation
     def test_value(self, id_row, x_test):
         last_layer_index = len(self._layers)-1
-        self.feedforward(id_row)
-        estimation = self._layers[last_layer_index]
+        self.feedforward(x_test, id_row)
+        estimation = self._layers[last_layer_index][0]
         result = 1 if estimation > 0.5 else 0
         return result #last layer
 
@@ -235,23 +246,23 @@ class NeuralNetwork:
             sq_mean_error = 0
             cross_entropy = 0
             for j in range(m):
-                self._feedforward(j, m)
+                self._feedforward(X, j, m)
                 sq_mean_error += self.sq_mean_error
                 cross_entropy += self.cross_entropy
-                self.backprop(j)
-            sq_mean_errors.append(sq_mean_error)
+                self.backprop(X, j)
+            sq_mean_errors.append(sq_mean_error[0])
         print(sq_mean_errors)
         f.write("cost: square mean error: %f\n" %(sum(sq_mean_errors)/m))
         f.write("cost: cross-entropy: %f\n" %(cross_entropy/m))
 
         if (print_weights):
             f.write("weights: "+str(self.weights)+"\n")
-        
-        plt.clf()
-        plt.plot(sq_mean_errors)
-        plt.ylabel('Sq mean error')
-        plt.xlabel('Epoch')
-        plt.show()
+
+        # plt.clf()
+        # plt.plot(sq_mean_errors)
+        # plt.ylabel('Sq mean error')
+        # plt.xlabel('Epoch')
+        # plt.show()
 
 def main():
     X = pd.read_csv('../titanic/train_x.csv', sep=',', skiprows=1, names=['Pclass', 'Sex', 'Age', 'Parch', 'Fare'])
@@ -265,13 +276,12 @@ def main():
     # #k-folds
     # k_folds(X, y, 10)
     m = X.shape[0] #number of samples
-
     f = open("training/training.txt","a")
 
     X_80_20 = split(X, int(0.8*m))
     y_80_20 = split(y, int(0.8*m))
     nn = NeuralNetwork(X, y, 3)
-    epochs = 500
+    epochs = 100
     nn.run_nn_simulation(X_80_20[0], y_80_20[0], epochs, f, True)
     print('accuracy',nn.check_accuracy(X_80_20[1], y_80_20[1]))
 
