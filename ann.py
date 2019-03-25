@@ -51,8 +51,10 @@ def one_hot_encoding(X, column_name):
 #   y: the full input DataFrame
 #   k: number of partitions
 # returns: no return
-def k_folds(X, y, k):
+def k_folds(X, y, test, k):
     accuracies = []
+    square_mean_errors = []
+    cross_entropies = []
     chunks_x = split(X, int(len(X)/k))
     chunks_y = split(y, int(len(y)/k))
     for i in range(k):
@@ -75,12 +77,16 @@ def k_folds(X, y, k):
         f.write('\nk = %d\n' %i)
         nn = NeuralNetwork(X, y, 3)
         epochs = 50
-        nn.run_nn_simulation(X, y, epochs, f, True)
+        square_mean_error, cross_entropy = nn.run_nn_simulation(X, y, epochs, f, True)
         accuracy = nn.check_accuracy(cross_validation_x, cross_validation_y)
+        square_mean_errors.append(square_mean_error)
+        cross_entropies.append(cross_entropy)
         accuracies.append(accuracy)
         f.write("accuracy %f\n" %(accuracy))
+    f.write('AVG square_mean_error %f' %mean(square_mean_errors))
+    f.write('AVG cross-entropy %f' %mean(cross_entropies))
     f.write('AVG accuracies %f' %mean(accuracies))
-
+    nn.run_tests(test)
 # Splits a dataframe creating new dataframes of size chunk_size
 # params:
 #   df: the dataframe
@@ -102,11 +108,9 @@ def clean_dataset(df):
     df = one_hot_encoding(df, "Pclass")
     #dimensionality reduction - consult atached files to see why I deleted this columns
     df = df.drop('Parch', axis=1)
-    df = df.drop(3, axis=1)
-    # 'Sex', 'Fare', 2, 1
-    #
-    #  'Sex', 'Age',  'Fare', 2, 1
-    scaling
+    df = df.drop('Fare', axis=1)
+
+    #scaling
     for column in df:
         df[column] = scaling(df[column])
 
@@ -127,7 +131,7 @@ class NeuralNetwork:
         self.deltas         = [0]*n_layers
         self.sq_mean_error  = 0
         self.cross_entropy  = 0
-        self.regularization_rate = 0.01
+        self.regularization_rate = 0.001
 
     # Adds a layer to the nn
     # params:
@@ -161,8 +165,8 @@ class NeuralNetwork:
         current_y = self.y.iloc[id_row,:]['Survived']
         last_layer_index = len(self._layers)-1
         self.feedforward(X, id_row)
-        self.sq_mean_error = ((current_y - self._layers[last_layer_index]) ** 2)/n_values
-        self.cross_entropy  = -current_y*math.log(self._layers[last_layer_index])-(1-current_y)*math.log(1-self._layers[last_layer_index])
+        self.sq_mean_error = ((current_y - self._layers[last_layer_index][0]) ** 2)/n_values
+        self.cross_entropy  = (-current_y*math.log(self._layers[last_layer_index])-(1-current_y)*math.log(1-self._layers[last_layer_index]))/n_values
 
     # Backpropagation of the nn
     # params:
@@ -186,7 +190,7 @@ class NeuralNetwork:
             layer = self._layers[i]
             # The input is either the previous layers output or X itself (for the first hidden layer)
             input_to_use = np.atleast_2d(current_x if i == 0 else self._layers[i - 1]) #https://docs.scipy.org/doc/numpy/reference/generated/numpy.atleast_2d.html
-            self.weights[i] += self.deltas[i] * input_to_use.T * self.learning_rate #- self.learning_rate * self.regularization_rate * self.weights[i]
+            self.weights[i] += self.deltas[i] * input_to_use.T * self.learning_rate - self.learning_rate * self.regularization_rate * self.weights[i]
 
     # Evaluates the accuracy of the model
     # params:
@@ -237,11 +241,12 @@ class NeuralNetwork:
     #   n_epochs: number of epochs to be run
     #   f: file where all the info of the simulations will be saved
     def run_nn_simulation(self, X, y, n_epochs, f, print_weights = False):
-        self.add_layer(X.shape[1],3) #X.shape[1] is num of input cols
-        self.add_layer(3,2)
+        self.add_layer(X.shape[1],2) #X.shape[1] is num of input cols
+        self.add_layer(2,2)
         self.add_layer(2,1)
         m = X.shape[0] #number of samples
         sq_mean_errors = []
+        cross_entropies = []
         for i in range(n_epochs):
             sq_mean_error = 0
             cross_entropy = 0
@@ -250,13 +255,14 @@ class NeuralNetwork:
                 sq_mean_error += self.sq_mean_error
                 cross_entropy += self.cross_entropy
                 self.backprop(X, j)
-            sq_mean_errors.append(sq_mean_error[0])
-        print(sq_mean_errors)
-        f.write("cost: square mean error: %f\n" %(sum(sq_mean_errors)/m))
-        f.write("cost: cross-entropy: %f\n" %(cross_entropy/m))
+            sq_mean_errors.append(sq_mean_error)
+            cross_entropies.append(cross_entropy)
+        f.write("cost: square mean error: %f\n" %(mean(sq_mean_errors)))
+        f.write("cost: cross-entropy: %f\n" %(mean(cross_entropies)))
 
         if (print_weights):
             f.write("weights: "+str(self.weights)+"\n")
+        return mean(sq_mean_errors), mean(cross_entropies)
 
         # plt.clf()
         # plt.plot(sq_mean_errors)
@@ -274,18 +280,18 @@ def main():
     test = clean_dataset(test)
 
     # #k-folds
-    # k_folds(X, y, 10)
-    m = X.shape[0] #number of samples
-    f = open("training/training.txt","a")
-
-    X_80_20 = split(X, int(0.8*m))
-    y_80_20 = split(y, int(0.8*m))
-    nn = NeuralNetwork(X, y, 3)
-    epochs = 100
-    nn.run_nn_simulation(X_80_20[0], y_80_20[0], epochs, f, True)
-    print('accuracy',nn.check_accuracy(X_80_20[1], y_80_20[1]))
-
-    nn.run_tests(test)
+    k_folds(X, y, test, 10)
+    # m = X.shape[0] #number of samples
+    # f = open("training/training.txt","a")
+    #
+    # X_80_20 = split(X, int(0.8*m))
+    # y_80_20 = split(y, int(0.8*m))
+    # nn = NeuralNetwork(X, y, 3)
+    # epochs = 100
+    # nn.run_nn_simulation(X_80_20[0], y_80_20[0], epochs, f, True)
+    # print('accuracy',nn.check_accuracy(X_80_20[1], y_80_20[1]))
+    #
+    # nn.run_tests(test)
 
     print('\a')
 if __name__ == "__main__":
