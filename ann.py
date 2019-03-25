@@ -74,7 +74,7 @@ def k_folds(X, y, k):
         f = open("k-folds/k-folds.txt","a")
         f.write('\nk = %d\n' %i)
         nn = NeuralNetwork(X, y, 3)
-        epochs = 2
+        epochs = 500
         nn.run_nn_simulation(X, y, epochs, f, True)
         accuracy = nn.check_accuracy(cross_validation_x, cross_validation_y)
         accuracies.append(accuracy)
@@ -112,7 +112,7 @@ class NeuralNetwork:
     def __init__(self, x, y, n_layers):
         self.input          = x
         self.y              = y
-        self.learning_rate  = 0.01
+        self.learning_rate  = 0.1
         self._layers        = []
         self.weights        = []
         self.deltas         = [0]*n_layers
@@ -212,7 +212,6 @@ class NeuralNetwork:
     #   x_test: the testing dataset
     # return: the result of the evaluation
     def test_value(self, id_row, x_test):
-        # current_x = x_test.iloc[id_row,:]
         last_layer_index = len(self._layers)-1
         self.feedforward(id_row)
         estimation = self._layers[last_layer_index]
@@ -247,7 +246,7 @@ class NeuralNetwork:
 
         if (print_weights):
             f.write("weights: "+str(self.weights)+"\n")
-
+        
         plt.clf()
         plt.plot(sq_mean_errors)
         plt.ylabel('Sq mean error')
@@ -263,7 +262,7 @@ def main():
     X = clean_dataset(X)
     test = clean_dataset(test)
 
-    #k-folds
+    # #k-folds
     # k_folds(X, y, 10)
     m = X.shape[0] #number of samples
 
@@ -272,9 +271,9 @@ def main():
     X_80_20 = split(X, int(0.8*m))
     y_80_20 = split(y, int(0.8*m))
     nn = NeuralNetwork(X, y, 3)
-    epochs = 100
+    epochs = 500
     nn.run_nn_simulation(X_80_20[0], y_80_20[0], epochs, f, True)
-    nn.check_accuracy(X_80_20[1], y_80_20[1])
+    print('accuracy',nn.check_accuracy(X_80_20[1], y_80_20[1]))
 
     nn.run_tests(test)
 

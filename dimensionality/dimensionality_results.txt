@@ -1,0 +1,384 @@
+7 :['Sex', 'Age', 'Parch', 'Fare', 3, 2, 1]
+cost: square mean error: 0.017103
+cost: cross-entropy: 0.677224
+6 :['Sex', 'Age', 'Parch', 'Fare', 3, 2]
+cost: square mean error: 0.016937
+cost: cross-entropy: 0.672794
+6 :['Sex', 'Age', 'Parch', 'Fare', 3, 1]
+cost: square mean error: 0.017161
+cost: cross-entropy: 0.677623
+5 :['Sex', 'Age', 'Parch', 'Fare', 3]
+cost: square mean error: 0.017110
+cost: cross-entropy: 0.666764
+6 :['Sex', 'Age', 'Parch', 'Fare', 2, 1]
+cost: square mean error: 0.017114
+cost: cross-entropy: 0.671957
+5 :['Sex', 'Age', 'Parch', 'Fare', 2]
+cost: square mean error: 0.017250
+cost: cross-entropy: 0.678494
+5 :['Sex', 'Age', 'Parch', 'Fare', 1]
+cost: square mean error: 0.017187
+cost: cross-entropy: 0.678196
+4 :['Sex', 'Age', 'Parch', 'Fare']
+cost: square mean error: 0.017254
+cost: cross-entropy: 0.683152
+6 :['Sex', 'Age', 'Parch', 3, 2, 1]
+cost: square mean error: 0.017224
+cost: cross-entropy: 0.675980
+5 :['Sex', 'Age', 'Parch', 3, 2]
+cost: square mean error: 0.016900
+cost: cross-entropy: 0.668991
+5 :['Sex', 'Age', 'Parch', 3, 1]
+cost: square mean error: 0.017054
+cost: cross-entropy: 0.675127
+4 :['Sex', 'Age', 'Parch', 3]
+cost: square mean error: 0.017021
+cost: cross-entropy: 0.676926
+5 :['Sex', 'Age', 'Parch', 2, 1]
+cost: square mean error: 0.017273
+cost: cross-entropy: 0.672125
+4 :['Sex', 'Age', 'Parch', 2]
+cost: square mean error: 0.017034
+cost: cross-entropy: 0.675217
+4 :['Sex', 'Age', 'Parch', 1]
+cost: square mean error: 0.017035
+cost: cross-entropy: 0.676562
+3 :['Sex', 'Age', 'Parch']
+cost: square mean error: 0.017027
+cost: cross-entropy: 0.675981
+6 :['Sex', 'Age', 'Fare', 3, 2, 1]
+cost: square mean error: 0.017138
+cost: cross-entropy: 0.678657
+5 :['Sex', 'Age', 'Fare', 3, 2]
+cost: square mean error: 0.017211
+cost: cross-entropy: 0.678800
+5 :['Sex', 'Age', 'Fare', 3, 1]
+cost: square mean error: 0.017318
+cost: cross-entropy: 0.680807
+4 :['Sex', 'Age', 'Fare', 3]
+cost: square mean error: 0.017188
+cost: cross-entropy: 0.675528
+5 :['Sex', 'Age', 'Fare', 2, 1]
+cost: square mean error: 0.017168
+cost: cross-entropy: 0.676433
+4 :['Sex', 'Age', 'Fare', 2]
+cost: square mean error: 0.017155
+cost: cross-entropy: 0.679318
+4 :['Sex', 'Age', 'Fare', 1]
+cost: square mean error: 0.017290
+cost: cross-entropy: 0.682617
+3 :['Sex', 'Age', 'Fare']
+cost: square mean error: 0.017032
+cost: cross-entropy: 0.675680
+5 :['Sex', 'Age', 3, 2, 1]
+cost: square mean error: 0.017142
+cost: cross-entropy: 0.668999
+4 :['Sex', 'Age', 3, 2]
+cost: square mean error: 0.016983
+cost: cross-entropy: 0.672822
+4 :['Sex', 'Age', 3, 1]
+cost: square mean error: 0.016971
+cost: cross-entropy: 0.673791
+3 :['Sex', 'Age', 3]
+cost: square mean error: 0.017123
+cost: cross-entropy: 0.672452
+4 :['Sex', 'Age', 2, 1]
+cost: square mean error: 0.016737
+cost: cross-entropy: 0.628594
+3 :['Sex', 'Age', 2]
+cost: square mean error: 0.016887
+cost: cross-entropy: 0.662912
+3 :['Sex', 'Age', 1]
+cost: square mean error: 0.017201
+cost: cross-entropy: 0.677199
+2 :['Sex', 'Age']
+cost: square mean error: 0.016982
+cost: cross-entropy: 0.661786
+6 :['Sex', 'Parch', 'Fare', 3, 2, 1]
+cost: square mean error: 0.017116
+cost: cross-entropy: 0.677476
+5 :['Sex', 'Parch', 'Fare', 3, 2]
+cost: square mean error: 0.017226
+cost: cross-entropy: 0.677102
+5 :['Sex', 'Parch', 'Fare', 3, 1]
+cost: square mean error: 0.017126
+cost: cross-entropy: 0.678606
+4 :['Sex', 'Parch', 'Fare', 3]
+cost: square mean error: 0.016988
+cost: cross-entropy: 0.666713
+5 :['Sex', 'Parch', 'Fare', 2, 1]
+cost: square mean error: 0.017131
+cost: cross-entropy: 0.666625
+4 :['Sex', 'Parch', 'Fare', 2]
+cost: square mean error: 0.017250
+cost: cross-entropy: 0.676785
+4 :['Sex', 'Parch', 'Fare', 1]
+cost: square mean error: 0.017180
+cost: cross-entropy: 0.679383
+3 :['Sex', 'Parch', 'Fare']
+cost: square mean error: 0.017071
+cost: cross-entropy: 0.675090
+5 :['Sex', 'Parch', 3, 2, 1]
+cost: square mean error: 0.016926
+cost: cross-entropy: 0.657975
+4 :['Sex', 'Parch', 3, 2]
+cost: square mean error: 0.017230
+cost: cross-entropy: 0.674079
+4 :['Sex', 'Parch', 3, 1]
+cost: square mean error: 0.017250
+cost: cross-entropy: 0.677835
+3 :['Sex', 'Parch', 3]
+cost: square mean error: 0.016963
+cost: cross-entropy: 0.668283
+4 :['Sex', 'Parch', 2, 1]
+cost: square mean error: 0.017073
+cost: cross-entropy: 0.677919
+3 :['Sex', 'Parch', 2]
+cost: square mean error: 0.017142
+cost: cross-entropy: 0.675885
+3 :['Sex', 'Parch', 1]
+cost: square mean error: 0.017288
+cost: cross-entropy: 0.684964
+2 :['Sex', 'Parch']
+cost: square mean error: 0.017175
+cost: cross-entropy: 0.680618
+5 :['Sex', 'Fare', 3, 2, 1]
+cost: square mean error: 0.017284
+cost: cross-entropy: 0.680281
+4 :['Sex', 'Fare', 3, 2]
+cost: square mean error: 0.017203
+cost: cross-entropy: 0.679231
+4 :['Sex', 'Fare', 3, 1]
+cost: square mean error: 0.017057
+cost: cross-entropy: 0.669143
+3 :['Sex', 'Fare', 3]
+cost: square mean error: 0.016968
+cost: cross-entropy: 0.674106
+4 :['Sex', 'Fare', 2, 1]
+cost: square mean error: 0.016520
+cost: cross-entropy: 0.624331
+3 :['Sex', 'Fare', 2]
+cost: square mean error: 0.017212
+cost: cross-entropy: 0.677924
+3 :['Sex', 'Fare', 1]
+cost: square mean error: 0.017168
+cost: cross-entropy: 0.680128
+2 :['Sex', 'Fare']
+cost: square mean error: 0.017008
+cost: cross-entropy: 0.669213
+4 :['Sex', 3, 2, 1]
+cost: square mean error: 0.017064
+cost: cross-entropy: 0.669316
+3 :['Sex', 3, 2]
+cost: square mean error: 0.017024
+cost: cross-entropy: 0.673461
+3 :['Sex', 3, 1]
+cost: square mean error: 0.017057
+cost: cross-entropy: 0.671684
+2 :['Sex', 3]
+cost: square mean error: 0.017026
+cost: cross-entropy: 0.675466
+3 :['Sex', 2, 1]
+cost: square mean error: 0.017077
+cost: cross-entropy: 0.671377
+2 :['Sex', 2]
+cost: square mean error: 0.017305
+cost: cross-entropy: 0.676718
+2 :['Sex', 1]
+cost: square mean error: 0.017278
+cost: cross-entropy: 0.681925
+1 :['Sex']
+cost: square mean error: 0.017234
+cost: cross-entropy: 0.677199
+6 :['Age', 'Parch', 'Fare', 3, 2, 1]
+cost: square mean error: 0.017102
+cost: cross-entropy: 0.674282
+5 :['Age', 'Parch', 'Fare', 3, 2]
+cost: square mean error: 0.017116
+cost: cross-entropy: 0.670740
+5 :['Age', 'Parch', 'Fare', 3, 1]
+cost: square mean error: 0.017030
+cost: cross-entropy: 0.675655
+4 :['Age', 'Parch', 'Fare', 3]
+cost: square mean error: 0.016995
+cost: cross-entropy: 0.674737
+5 :['Age', 'Parch', 'Fare', 2, 1]
+cost: square mean error: 0.017336
+cost: cross-entropy: 0.679728
+4 :['Age', 'Parch', 'Fare', 2]
+cost: square mean error: 0.017087
+cost: cross-entropy: 0.677239
+4 :['Age', 'Parch', 'Fare', 1]
+cost: square mean error: 0.017077
+cost: cross-entropy: 0.678916
+3 :['Age', 'Parch', 'Fare']
+cost: square mean error: 0.017015
+cost: cross-entropy: 0.677835
+5 :['Age', 'Parch', 3, 2, 1]
+cost: square mean error: 0.016955
+cost: cross-entropy: 0.674140
+4 :['Age', 'Parch', 3, 2]
+cost: square mean error: 0.017014
+cost: cross-entropy: 0.673774
+4 :['Age', 'Parch', 3, 1]
+cost: square mean error: 0.017101
+cost: cross-entropy: 0.674700
+3 :['Age', 'Parch', 3]
+cost: square mean error: 0.016821
+cost: cross-entropy: 0.671295
+4 :['Age', 'Parch', 2, 1]
+cost: square mean error: 0.017166
+cost: cross-entropy: 0.675231
+3 :['Age', 'Parch', 2]
+cost: square mean error: 0.017140
+cost: cross-entropy: 0.677385
+3 :['Age', 'Parch', 1]
+cost: square mean error: 0.017125
+cost: cross-entropy: 0.678930
+2 :['Age', 'Parch']
+cost: square mean error: 0.017065
+cost: cross-entropy: 0.675359
+5 :['Age', 'Fare', 3, 2, 1]
+cost: square mean error: 0.017011
+cost: cross-entropy: 0.674479
+4 :['Age', 'Fare', 3, 2]
+cost: square mean error: 0.016955
+cost: cross-entropy: 0.671705
+4 :['Age', 'Fare', 3, 1]
+cost: square mean error: 0.017071
+cost: cross-entropy: 0.672261
+3 :['Age', 'Fare', 3]
+cost: square mean error: 0.016678
+cost: cross-entropy: 0.658236
+4 :['Age', 'Fare', 2, 1]
+cost: square mean error: 0.017162
+cost: cross-entropy: 0.677818
+3 :['Age', 'Fare', 2]
+cost: square mean error: 0.017105
+cost: cross-entropy: 0.677073
+3 :['Age', 'Fare', 1]
+cost: square mean error: 0.017225
+cost: cross-entropy: 0.674606
+2 :['Age', 'Fare']
+cost: square mean error: 0.017074
+cost: cross-entropy: 0.676970
+4 :['Age', 3, 2, 1]
+cost: square mean error: 0.016838
+cost: cross-entropy: 0.670759
+3 :['Age', 3, 2]
+cost: square mean error: 0.016776
+cost: cross-entropy: 0.668088
+3 :['Age', 3, 1]
+cost: square mean error: 0.016940
+cost: cross-entropy: 0.672046
+2 :['Age', 3]
+cost: square mean error: 0.016719
+cost: cross-entropy: 0.667201
+3 :['Age', 2, 1]
+cost: square mean error: 0.017175
+cost: cross-entropy: 0.676102
+2 :['Age', 2]
+cost: square mean error: 0.016987
+cost: cross-entropy: 0.676072
+2 :['Age', 1]
+cost: square mean error: 0.017108
+cost: cross-entropy: 0.677278
+1 :['Age']
+cost: square mean error: 0.016951
+cost: cross-entropy: 0.675178
+5 :['Parch', 'Fare', 3, 2, 1]
+cost: square mean error: 0.017225
+cost: cross-entropy: 0.680664
+4 :['Parch', 'Fare', 3, 2]
+cost: square mean error: 0.017043
+cost: cross-entropy: 0.674313
+4 :['Parch', 'Fare', 3, 1]
+cost: square mean error: 0.016980
+cost: cross-entropy: 0.674739
+3 :['Parch', 'Fare', 3]
+cost: square mean error: 0.016849
+cost: cross-entropy: 0.670785
+4 :['Parch', 'Fare', 2, 1]
+cost: square mean error: 0.017143
+cost: cross-entropy: 0.674050
+3 :['Parch', 'Fare', 2]
+cost: square mean error: 0.017071
+cost: cross-entropy: 0.677368
+3 :['Parch', 'Fare', 1]
+cost: square mean error: 0.017215
+cost: cross-entropy: 0.679258
+2 :['Parch', 'Fare']
+cost: square mean error: 0.017074
+cost: cross-entropy: 0.676918
+4 :['Parch', 3, 2, 1]
+cost: square mean error: 0.016987
+cost: cross-entropy: 0.670531
+3 :['Parch', 3, 2]
+cost: square mean error: 0.016922
+cost: cross-entropy: 0.669661
+3 :['Parch', 3, 1]
+cost: square mean error: 0.017045
+cost: cross-entropy: 0.673828
+2 :['Parch', 3]
+cost: square mean error: 0.016899
+cost: cross-entropy: 0.670314
+3 :['Parch', 2, 1]
+cost: square mean error: 0.017226
+cost: cross-entropy: 0.678458
+2 :['Parch', 2]
+cost: square mean error: 0.017095
+cost: cross-entropy: 0.676874
+2 :['Parch', 1]
+cost: square mean error: 0.017092
+cost: cross-entropy: 0.676268
+1 :['Parch']
+cost: square mean error: 0.017127
+cost: cross-entropy: 0.676154
+4 :['Fare', 3, 2, 1]
+cost: square mean error: 0.016997
+cost: cross-entropy: 0.674870
+3 :['Fare', 3, 2]
+cost: square mean error: 0.016821
+cost: cross-entropy: 0.669999
+3 :['Fare', 3, 1]
+cost: square mean error: 0.016981
+cost: cross-entropy: 0.673840
+2 :['Fare', 3]
+cost: square mean error: 0.017139
+cost: cross-entropy: 0.675390
+3 :['Fare', 2, 1]
+cost: square mean error: 0.017289
+cost: cross-entropy: 0.678837
+2 :['Fare', 2]
+cost: square mean error: 0.017063
+cost: cross-entropy: 0.678269
+2 :['Fare', 1]
+cost: square mean error: 0.017226
+cost: cross-entropy: 0.678468
+1 :['Fare']
+cost: square mean error: 0.017062
+cost: cross-entropy: 0.676695
+3 :[3, 2, 1]
+cost: square mean error: 0.016998
+cost: cross-entropy: 0.674418
+2 :[3, 2]
+cost: square mean error: 0.016994
+cost: cross-entropy: 0.671167
+2 :[3, 1]
+cost: square mean error: 0.017102
+cost: cross-entropy: 0.672031
+1 :[3]
+cost: square mean error: 0.016879
+cost: cross-entropy: 0.671512
+2 :[2, 1]
+cost: square mean error: 0.017216
+cost: cross-entropy: 0.679437
+1 :[2]
+cost: square mean error: 0.016973
+cost: cross-entropy: 0.675773
+1 :[1]
+cost: square mean error: 0.017034
+cost: cross-entropy: 0.677849
+0 :[]
+cost: square mean error: 0.017016
+cost: cross-entropy: 0.675734

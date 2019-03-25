@@ -17,7 +17,7 @@ def dimensionality_reduction(X, y):
                 aux_X = aux_X.drop(column_names[j], axis=1)
         f= open("dimensionality/dimensionality_results.txt","a")
         f.write(str(len(list(aux_X.columns.values)))+' :'+str(list(aux_X.columns.values))+' \n')
-        epochs = 2
+        epochs = 50
         nn = ann.NeuralNetwork(aux_X, y, 3)
         nn.run_nn_simulation(aux_X, y, epochs, f)
 
